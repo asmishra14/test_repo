@@ -1,0 +1,8 @@
+Strategy to reduce imbalance with Zeroes with in the labels as Zero would dominate through out the images.
+
+Step 1: perform an analysis to check the class imbalance after the labelling is completed.
+
+Step 2: identify a suitable no of samples for Zeros
+
+Step 3: before splitting the dataset, do resampling of the zeros randomly.
+and then use the zeros along with other labels 1-9 and then use for model training and testing.

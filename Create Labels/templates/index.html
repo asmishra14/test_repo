@@ -1,0 +1,660 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IPL Annotation Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      :root {
+        --bg-primary: #0b0f19;
+        --bg-secondary: #131b2e;
+        --bg-card: rgba(30, 41, 59, 0.45);
+        --border-color: rgba(255, 255, 255, 0.08);
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent-primary: #3b82f6;
+        --accent-success: #10b981;
+        --accent-success-glow: rgba(16, 185, 129, 0.15);
+        --font-main: 'Outfit', sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at top, #1e293b 0%, #0b0f19 100%);
+        color: var(--text-primary);
+        font-family: var(--font-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-bottom: 2rem;
+      }
+
+      header {
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+      }
+
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        font-weight: 400;
+      }
+
+      .dashboard {
+        display: flex;
+        flex-direction: column;
+        width: 800px;
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        box-sizing: border-box;
+      }
+
+      .stats-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+      }
+
+      .stat-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .stat-value span.highlight {
+        color: var(--accent-success);
+      }
+
+      .progress-container {
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+        box-shadow: 0 0 8px var(--accent-success-glow);
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .label-stats-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .labels-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .label-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        border-radius: 999px;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        gap: 0.4rem;
+        transition: all 0.2s ease;
+      }
+
+      .label-pill:hover {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .pill-number {
+        color: #60a5fa;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+      }
+
+      .pill-count {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .no-labels-text {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      .workspace {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        margin-bottom: 1.5rem;
+        background: #000;
+        display: flex;
+      }
+
+      canvas {
+        display: block;
+        cursor: crosshair;
+        transition: box-shadow 0.3s ease;
+      }
+
+      canvas:hover {
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.15);
+      }
+
+      .controls-card {
+        width: 800px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        box-sizing: border-box;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      button {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        padding: 0.6rem 1.4rem;
+        font-family: var(--font-main);
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      button:hover {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-color: #3b82f6;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .current-file {
+        font-family: monospace;
+        color: var(--text-primary);
+        font-weight: 500;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 6px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        max-width: 320px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .legend-box {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: rgba(15, 23, 42, 0.4);
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .legend-key {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 4px;
+        padding: 0.1rem 0.4rem;
+        font-family: monospace;
+        font-weight: bold;
+        color: #60a5fa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>IPL Grid Annotation Tool</h1>
+      <p class="subtitle">Click on a cell → Press 1-9 for Teams 1-9, 's' for SRH (10), '0' for Background</p>
+    </header>
+
+    <div class="dashboard">
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-label">Dataset Progress</span>
+          <span class="stat-value">
+            <span class="highlight">{{ annotated_count }}</span> / {{ total_images }} Images Annotated
+          </span>
+        </div>
+        <div class="stat-item" style="text-align: right;">
+          <span class="stat-label">Current Image</span>
+          <span class="stat-value">Image {{ current_image_num }} of {{ total_images }}</span>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" style="width: {{ (annotated_count / total_images) * 100 if total_images > 0 else 0 }}%;"></div>
+      </div>
+
+      <div class="label-stats-row">
+        <div class="stat-item">
+          <span class="stat-label">Total Annotated Cells</span>
+          <span class="stat-value" style="color: var(--accent-primary);">{{ total_labels_count }} Labeled Cells</span>
+        </div>
+        <div class="labels-container">
+          {% if label_counts %}
+            {% for label, count in label_counts %}
+              <div class="label-pill" title="Number '{{ label }}' was annotated {{ count }} times">
+                <span class="pill-number">{{ label }}</span>
+                <span class="pill-count">{{ count }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <span class="no-labels-text">No cells annotated yet.</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+
+    <div class="controls-card">
+      <div class="nav-buttons">
+        <button onclick="prevImage()" title="Shortcut: ← Arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Prev
+        </button>
+
+        <button onclick="nextImage()" title="Shortcut: → Arrow">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+
+        <div style="display:flex; align-items:center; gap:0.4rem; margin-left:0.5rem;">
+          <input id="goto-input" type="number" min="1" max="{{ total_images }}" value="{{ current_image_num }}"
+            style="width:60px; padding:0.4rem 0.5rem; border-radius:6px; border:1px solid var(--border-color);
+            background:rgba(15,23,42,0.6); color:var(--text-primary); font-family:var(--font-main);
+            font-size:0.85rem; text-align:center;"
+            title="Type an image number and press Enter to jump">
+          <span style="color:var(--text-secondary); font-size:0.8rem;">/ {{ total_images }}</span>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button id="auto-btn" onclick="autoRecommend()" title="Shortcut: A key"
+          style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #059669;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Auto
+        </button>
+
+        <button id="auto-all-btn" onclick="autoRecommendAll()"
+          style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #d97706;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+          Auto All
+        </button>
+      </div>
+    </div>
+
+    <div class="controls-card" style="margin-top:0.75rem; justify-content:center;">
+      <div class="current-file" title="{{ image_name }}">
+        📄 {{ image_name }}
+      </div>
+
+      <div class="legend-box" style="margin-left:1rem;">
+        <div class="legend-item">
+          <span class="legend-key">←→</span> Nav
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">Click</span> Cell
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">1-9</span> Teams
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">s</span> SRH
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">0</span> BG
+        </div>
+        <div class="legend-item">
+          <span class="legend-key">a</span> Auto
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+
+      const ctx = canvas.getContext("2d");
+
+      const imageName = "{{ image_name }}";
+
+      const annotations = {{ annotations | tojson }};
+
+      const image = new Image();
+
+      image.src = "/static/dataset/" + imageName;
+
+      let selectedCell = null;
+
+      image.onload = function () {
+          drawCanvas();
+      };
+
+      function drawCanvas() {
+          ctx.drawImage(image, 0, 0, 800, 600);
+          drawGrid();
+          drawAnnotations();
+          drawSelectedCell();
+      }
+
+      function drawGrid() {
+          ctx.strokeStyle = "rgba(239, 68, 68, 0.75)";
+          ctx.lineWidth = 1.5;
+
+          for (let i = 0; i <= 8; i++) {
+              ctx.beginPath();
+              ctx.moveTo(i * 100, 0);
+              ctx.lineTo(i * 100, 600);
+              ctx.stroke();
+
+              ctx.beginPath();
+              ctx.moveTo(0, i * 75);
+              ctx.lineTo(800, i * 75);
+              ctx.stroke();
+          }
+      }
+
+      function drawAnnotations() {
+          for (const cellId in annotations) {
+              const label = annotations[cellId];
+              const index = parseInt(cellId.replace("c", "")) - 1;
+              const row = Math.floor(index / 8);
+              const col = index % 8;
+
+              // Soft emerald highlight overlay
+              ctx.fillStyle = "rgba(16, 185, 129, 0.35)";
+              ctx.fillRect(col * 100, row * 75, 100, 75);
+
+              // Stylish bold label centering
+              ctx.fillStyle = "#ffffff";
+              ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
+              ctx.shadowBlur = 4;
+              ctx.font = "bold 20px 'Outfit', sans-serif";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+
+              ctx.fillText(
+                  label,
+                  col * 100 + 50,
+                  row * 75 + 37.5
+              );
+
+              // Reset shadow for subsequent draw commands
+              ctx.shadowBlur = 0;
+          }
+      }
+
+      function drawSelectedCell() {
+          if (!selectedCell) return;
+          const index = parseInt(selectedCell.replace("c", "")) - 1;
+          const row = Math.floor(index / 8);
+          const col = index % 8;
+          ctx.strokeStyle = "#facc15";
+          ctx.lineWidth = 3;
+          ctx.strokeRect(col * 100 + 2, row * 75 + 2, 96, 71);
+      }
+
+      canvas.addEventListener("click", function(event) {
+          const rect = canvas.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          const col = Math.floor(x / 100);
+          const row = Math.floor(y / 75);
+          const cellNumber = row * 8 + col + 1;
+
+          selectedCell = "c" + cellNumber;
+          drawCanvas();
+      });
+
+      document.addEventListener("keydown", function(event) {
+          // Skip if user is typing in the goto input
+          if (document.activeElement.id === "goto-input") return;
+
+          // Arrow key navigation
+          if (event.key === "ArrowRight") {
+              event.preventDefault();
+              nextImage();
+              return;
+          }
+          if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              prevImage();
+              return;
+          }
+
+          // 'a' key for auto-recommend
+          if (event.key.toLowerCase() === 'a' && !selectedCell) {
+              event.preventDefault();
+              autoRecommend();
+              return;
+          }
+
+          if (!selectedCell) return;
+
+          let label;
+          if (event.key.toLowerCase() === 's') {
+              label = 10;
+          } else if (event.key.toLowerCase() === 'a') {
+              // 'a' with a cell selected = auto recommend (not annotation)
+              event.preventDefault();
+              autoRecommend();
+              return;
+          } else {
+              label = parseInt(event.key);
+          }
+          
+          if (isNaN(label)) return;
+
+          fetch("/annotate", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                  image_name: imageName,
+                  cell_id: selectedCell,
+                  label: label
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              annotations[selectedCell] = label;
+              drawCanvas();
+              // Reload page statistics dynamically by reloading
+              location.reload();
+          });
+      });
+
+      // Goto input — press Enter to jump
+      document.getElementById("goto-input").addEventListener("keydown", function(event) {
+          if (event.key === "Enter") {
+              event.preventDefault();
+              const target = parseInt(this.value);
+              if (isNaN(target) || target < 1) return;
+              fetch("/goto", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ index: target - 1 })
+              }).then(() => location.reload());
+          }
+      });
+
+      function nextImage() {
+          fetch("/next")
+          .then(() => location.reload());
+      }
+
+      function prevImage() {
+          fetch("/prev")
+          .then(() => location.reload());
+      }
+
+      function autoRecommend() {
+          const btn = document.getElementById("auto-btn");
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<svg class="animate-spin" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Working...`;
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          
+          fetch("/auto_recommend", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image_name: imageName })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === "success") {
+                  btn.innerHTML = `✅ ${data.recommended} cells`;
+                  btn.style.opacity = "1";
+                  setTimeout(() => location.reload(), 600);
+              } else {
+                  alert("Error: " + data.message);
+                  btn.innerHTML = originalText;
+                  btn.disabled = false;
+                  btn.style.opacity = "1";
+              }
+          })
+          .catch(err => {
+              alert("Error: " + err);
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+              btn.style.opacity = "1";
+          });
+      }
+
+      function autoRecommendAll() {
+          if (!confirm("This will auto-annotate ALL unannotated images in the dataset.\nAlready-annotated images will be skipped.\n\nThis may take a minute. Continue?")) return;
+
+          const btn = document.getElementById("auto-all-btn");
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<svg class="animate-spin" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Processing all...`;
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+
+          fetch("/auto_recommend_all", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({})
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === "success") {
+                  btn.innerHTML = `⚡ ${data.processed} done, ${data.skipped} skipped`;
+                  btn.style.opacity = "1";
+                  alert(data.message + (data.errors > 0 ? `\n\n${data.errors} errors.` : ""));
+                  setTimeout(() => location.reload(), 800);
+              } else {
+                  alert("Error: " + data.message);
+                  btn.innerHTML = originalText;
+                  btn.disabled = false;
+                  btn.style.opacity = "1";
+              }
+          })
+          .catch(err => {
+              alert("Error: " + err);
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+              btn.style.opacity = "1";
+          });
+      }
+    </script>
+    <style>
+      .animate-spin {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </body>
+</html>

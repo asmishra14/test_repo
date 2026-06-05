@@ -1,0 +1,392 @@
+Original feature dimension: 46
+
+============================================================
+Training SVM Pipeline...
+============================================================
+Adding PCA (90% variance) to SVM pipeline architecture...
+SVM - feature dimension before PCA: 46
+SVM - PCA reduced feature dimension to: 27
+
+
+Evaluating SVM...
+SVM Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.73      0.73       400
+           1       0.86      0.87      0.86        95
+           2       0.77      0.70      0.74       200
+           3       0.68      0.76      0.72       200
+           4       0.80      0.84      0.82       200
+           5       0.67      0.71      0.69       200
+           6       0.83      0.82      0.82       200
+           7       0.64      0.59      0.61       200
+           8       0.68      0.72      0.70       200
+           9       0.64      0.59      0.61       200
+          10       0.81      0.79      0.80       200
+
+    accuracy                           0.73      2295
+   macro avg       0.74      0.74      0.74      2295
+weighted avg       0.73      0.73      0.73      2295
+
+SVM Classification Report train:
+              precision    recall  f1-score   support
+
+           0       0.97      0.88      0.93      1600
+           1       0.97      1.00      0.99       378
+           2       0.92      0.92      0.92       800
+           3       0.89      0.96      0.92       800
+           4       0.97      0.97      0.97       800
+           5       0.89      0.94      0.91       800
+           6       0.93      0.95      0.94       800
+           7       0.90      0.89      0.89       800
+           8       0.92      0.92      0.92       800
+           9       0.90      0.88      0.89       800
+          10       0.91      0.94      0.92       800
+
+    accuracy                           0.92      9178
+   macro avg       0.92      0.93      0.93      9178
+weighted avg       0.93      0.92      0.92      9178
+
+SVM integrated pipeline saved to model_svm.pkl
+
+============================================================
+Training LOGISTIC_REGRESSION Pipeline...
+============================================================
+Adding PCA (90% variance) to LOGISTIC_REGRESSION pipeline architecture...
+LOGISTIC_REGRESSION - feature dimension before PCA: 46
+LOGISTIC_REGRESSION - PCA reduced feature dimension to: 27
+
+
+Evaluating LOGISTIC_REGRESSION...
+LOGISTIC_REGRESSION Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.63      0.48      0.55       400
+           1       0.63      0.86      0.73        95
+           2       0.64      0.47      0.54       200
+           3       0.49      0.67      0.56       200
+           4       0.69      0.67      0.68       200
+           5       0.54      0.58      0.56       200
+           6       0.55      0.73      0.63       200
+           7       0.50      0.37      0.43       200
+           8       0.61      0.65      0.63       200
+           9       0.39      0.33      0.35       200
+          10       0.61      0.72      0.66       200
+
+    accuracy                           0.57      2295
+   macro avg       0.57      0.59      0.57      2295
+weighted avg       0.57      0.57      0.57      2295
+
+LOGISTIC_REGRESSION Classification Report train:
+              precision    recall  f1-score   support
+
+           0       0.62      0.49      0.54      1600
+           1       0.64      0.89      0.75       378
+           2       0.61      0.55      0.57       800
+           3       0.53      0.66      0.59       800
+           4       0.72      0.70      0.71       800
+           5       0.58      0.60      0.59       800
+           6       0.57      0.68      0.62       800
+           7       0.43      0.37      0.40       800
+           8       0.64      0.65      0.64       800
+           9       0.44      0.35      0.39       800
+          10       0.58      0.71      0.64       800
+
+    accuracy                           0.58      9178
+   macro avg       0.58      0.60      0.59      9178
+weighted avg       0.58      0.58      0.57      9178
+
+LOGISTIC_REGRESSION integrated pipeline saved to model_lr.pkl
+
+============================================================
+Training XGB Pipeline...
+============================================================
+Skipping PCA for XGB (retaining raw scale-invariant feature space)...
+
+Evaluating XGB...
+XGB Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.78      0.76       400
+           1       0.87      0.89      0.88        95
+           2       0.81      0.68      0.74       200
+           3       0.76      0.78      0.77       200
+           4       0.86      0.81      0.83       200
+           5       0.68      0.80      0.73       200
+           6       0.79      0.86      0.82       200
+           7       0.68      0.53      0.60       200
+           8       0.71      0.72      0.71       200
+           9       0.63      0.62      0.63       200
+          10       0.80      0.82      0.81       200
+
+    accuracy                           0.75      2295
+   macro avg       0.76      0.75      0.75      2295
+weighted avg       0.75      0.75      0.75      2295
+
+XGB Classification Report train:
+              precision    recall  f1-score   support
+
+           0       1.00      0.96      0.98      1600
+           1       1.00      1.00      1.00       378
+           2       0.99      0.99      0.99       800
+           3       0.98      1.00      0.99       800
+           4       0.99      0.99      0.99       800
+           5       0.97      1.00      0.98       800
+           6       0.98      0.99      0.99       800
+           7       0.98      0.98      0.98       800
+           8       0.99      0.97      0.98       800
+           9       0.98      0.98      0.98       800
+          10       0.99      1.00      0.99       800
+
+    accuracy                           0.99      9178
+   macro avg       0.99      0.99      0.99      9178
+weighted avg       0.99      0.99      0.99      9178
+
+XGB integrated pipeline saved to model_xgb.pkl
+
+============================================================
+Training RF Pipeline...
+============================================================
+Skipping PCA for RF (retaining raw scale-invariant feature space)...
+
+Evaluating RF...
+RF Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.74      0.74       400
+           1       0.78      0.85      0.81        95
+           2       0.80      0.65      0.72       200
+           3       0.68      0.81      0.74       200
+           4       0.84      0.84      0.84       200
+           5       0.64      0.76      0.69       200
+           6       0.74      0.84      0.79       200
+           7       0.71      0.47      0.56       200
+           8       0.66      0.64      0.65       200
+           9       0.60      0.52      0.55       200
+          10       0.71      0.81      0.76       200
+
+    accuracy                           0.72      2295
+   macro avg       0.72      0.72      0.71      2295
+weighted avg       0.72      0.72      0.71      2295
+
+RF Classification Report train:
+              precision    recall  f1-score   support
+
+           0       1.00      0.99      0.99      1600
+           1       0.99      1.00      0.99       378
+           2       1.00      1.00      1.00       800
+           3       0.98      1.00      0.99       800
+           4       1.00      1.00      1.00       800
+           5       0.98      1.00      0.99       800
+           6       0.99      1.00      0.99       800
+           7       1.00      0.99      0.99       800
+           8       1.00      0.98      0.99       800
+           9       1.00      0.99      1.00       800
+          10       0.99      1.00      1.00       800
+
+    accuracy                           0.99      9178
+   macro avg       0.99      1.00      0.99      9178
+weighted avg       0.99      0.99      0.99      9178
+
+RF integrated pipeline saved to model_rf.pkl
+
+
+============================================================
+All models trained, selectively optimized with PCA, and exported successfully!
+============================================================
+Original feature dimension: 46
+
+============================================================
+Training SVM Pipeline...
+============================================================
+Adding PCA (90% variance) to SVM pipeline architecture...
+SVM - feature dimension before PCA: 46
+SVM - PCA reduced feature dimension to: 27
+
+
+Evaluating SVM...
+SVM Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.73      0.73       400
+           1       0.86      0.87      0.86        95
+           2       0.77      0.70      0.74       200
+           3       0.68      0.76      0.72       200
+           4       0.80      0.84      0.82       200
+           5       0.67      0.71      0.69       200
+           6       0.83      0.82      0.82       200
+           7       0.64      0.59      0.61       200
+           8       0.68      0.72      0.70       200
+           9       0.64      0.59      0.61       200
+          10       0.81      0.79      0.80       200
+
+    accuracy                           0.73      2295
+   macro avg       0.74      0.74      0.74      2295
+weighted avg       0.73      0.73      0.73      2295
+
+SVM Classification Report train:
+              precision    recall  f1-score   support
+
+           0       0.97      0.88      0.93      1600
+           1       0.97      1.00      0.99       378
+           2       0.92      0.92      0.92       800
+           3       0.89      0.96      0.92       800
+           4       0.97      0.97      0.97       800
+           5       0.89      0.94      0.91       800
+           6       0.93      0.95      0.94       800
+           7       0.90      0.89      0.89       800
+           8       0.92      0.92      0.92       800
+           9       0.90      0.88      0.89       800
+          10       0.91      0.94      0.92       800
+
+    accuracy                           0.92      9178
+   macro avg       0.92      0.93      0.93      9178
+weighted avg       0.93      0.92      0.92      9178
+
+SVM integrated pipeline saved to model_svm.pkl
+
+============================================================
+Training LOGISTIC_REGRESSION Pipeline...
+============================================================
+Adding PCA (90% variance) to LOGISTIC_REGRESSION pipeline architecture...
+LOGISTIC_REGRESSION - feature dimension before PCA: 46
+LOGISTIC_REGRESSION - PCA reduced feature dimension to: 27
+
+
+Evaluating LOGISTIC_REGRESSION...
+LOGISTIC_REGRESSION Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.63      0.48      0.55       400
+           1       0.63      0.86      0.73        95
+           2       0.64      0.47      0.54       200
+           3       0.49      0.67      0.56       200
+           4       0.69      0.67      0.68       200
+           5       0.54      0.58      0.56       200
+           6       0.55      0.73      0.63       200
+           7       0.50      0.37      0.43       200
+           8       0.61      0.65      0.63       200
+           9       0.39      0.33      0.35       200
+          10       0.61      0.72      0.66       200
+
+    accuracy                           0.57      2295
+   macro avg       0.57      0.59      0.57      2295
+weighted avg       0.57      0.57      0.57      2295
+
+LOGISTIC_REGRESSION Classification Report train:
+              precision    recall  f1-score   support
+
+           0       0.62      0.49      0.54      1600
+           1       0.64      0.89      0.75       378
+           2       0.61      0.55      0.57       800
+           3       0.53      0.66      0.59       800
+           4       0.72      0.70      0.71       800
+           5       0.58      0.60      0.59       800
+           6       0.57      0.68      0.62       800
+           7       0.43      0.37      0.40       800
+           8       0.64      0.65      0.64       800
+           9       0.44      0.35      0.39       800
+          10       0.58      0.71      0.64       800
+
+    accuracy                           0.58      9178
+   macro avg       0.58      0.60      0.59      9178
+weighted avg       0.58      0.58      0.57      9178
+
+LOGISTIC_REGRESSION integrated pipeline saved to model_lr.pkl
+
+============================================================
+Training XGB Pipeline...
+============================================================
+Skipping PCA for XGB (retaining raw scale-invariant feature space)...
+
+Evaluating XGB...
+XGB Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.78      0.76       400
+           1       0.87      0.89      0.88        95
+           2       0.81      0.68      0.74       200
+           3       0.76      0.78      0.77       200
+           4       0.86      0.81      0.83       200
+           5       0.68      0.80      0.73       200
+           6       0.79      0.86      0.82       200
+           7       0.68      0.53      0.60       200
+           8       0.71      0.72      0.71       200
+           9       0.63      0.62      0.63       200
+          10       0.80      0.82      0.81       200
+
+    accuracy                           0.75      2295
+   macro avg       0.76      0.75      0.75      2295
+weighted avg       0.75      0.75      0.75      2295
+
+XGB Classification Report train:
+              precision    recall  f1-score   support
+
+           0       1.00      0.96      0.98      1600
+           1       1.00      1.00      1.00       378
+           2       0.99      0.99      0.99       800
+           3       0.98      1.00      0.99       800
+           4       0.99      0.99      0.99       800
+           5       0.97      1.00      0.98       800
+           6       0.98      0.99      0.99       800
+           7       0.98      0.98      0.98       800
+           8       0.99      0.97      0.98       800
+           9       0.98      0.98      0.98       800
+          10       0.99      1.00      0.99       800
+
+    accuracy                           0.99      9178
+   macro avg       0.99      0.99      0.99      9178
+weighted avg       0.99      0.99      0.99      9178
+
+XGB integrated pipeline saved to model_xgb.pkl
+
+============================================================
+Training RF Pipeline...
+============================================================
+Skipping PCA for RF (retaining raw scale-invariant feature space)...
+
+Evaluating RF...
+RF Classification Report test:
+              precision    recall  f1-score   support
+
+           0       0.74      0.74      0.74       400
+           1       0.78      0.85      0.81        95
+           2       0.80      0.65      0.72       200
+           3       0.68      0.81      0.74       200
+           4       0.84      0.84      0.84       200
+           5       0.64      0.76      0.69       200
+           6       0.74      0.84      0.79       200
+           7       0.71      0.47      0.56       200
+           8       0.66      0.64      0.65       200
+           9       0.60      0.52      0.55       200
+          10       0.71      0.81      0.76       200
+
+    accuracy                           0.72      2295
+   macro avg       0.72      0.72      0.71      2295
+weighted avg       0.72      0.72      0.71      2295
+
+RF Classification Report train:
+              precision    recall  f1-score   support
+
+           0       1.00      0.99      0.99      1600
+           1       0.99      1.00      0.99       378
+           2       1.00      1.00      1.00       800
+           3       0.98      1.00      0.99       800
+           4       1.00      1.00      1.00       800
+           5       0.98      1.00      0.99       800
+           6       0.99      1.00      0.99       800
+           7       1.00      0.99      0.99       800
+           8       1.00      0.98      0.99       800
+           9       1.00      0.99      1.00       800
+          10       0.99      1.00      1.00       800
+
+    accuracy                           0.99      9178
+   macro avg       0.99      1.00      0.99      9178
+weighted avg       0.99      0.99      0.99      9178
+
+RF integrated pipeline saved to model_rf.pkl
+
+
+============================================================
+All models trained, selectively optimized with PCA, and exported successfully!
+============================================================

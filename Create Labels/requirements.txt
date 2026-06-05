@@ -1,0 +1,6 @@
+flask
+pillow
+pillow-avif-plugin
+opencv-python
+scikit-learn
+numpy
